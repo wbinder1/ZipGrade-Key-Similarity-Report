@@ -1,1 +1,3 @@
 # ZipGrade-Key-Similarity-Report
+
+**ZipGrade Similarity Report** is a web-based tool that compares student answer data against multiple ZipGrade answer keys. Users can upload a student response CSV and an answer key CSV, select which keys to analyze, and generate a sortable report showing how closely each student’s answers match other key versions. The tool includes two similarity reports: one that compares student answers directly to other keys, and another that adjusts the comparison based on how similar the answer keys already are to each other. Reports can be sorted, reviewed on the webpage, and downloaded as a CSV file.
