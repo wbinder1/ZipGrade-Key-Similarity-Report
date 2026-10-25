@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slipstream · Student Car Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#142034;--line:#2b3c53;--text:#edf4ff;--muted:#a1b3cc;--mint:#67edc3;--blue:#80bdff;--gold:#ffc184}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,sans-serif}button,input,select{font:inherit}button,select,input[type=number],input[type=text]{background:#1b2b42;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:9px 11px}button{cursor:pointer}button:hover{border-color:var(--mint)}button.active,button.primary{background:var(--mint);color:#07372d;border-color:var(--mint);font-weight:750}button:disabled{opacity:.4;cursor:default}input[type=range]{width:100%;accent-color:var(--mint)}input[type=checkbox]{accent-color:var(--mint)}input[type=color]{width:100%;height:38px;border:1px solid var(--line);background:transparent;border-radius:8px}input[type=text]{width:100%}input[type=number]{width:100%;min-width:0}select{max-width:100%}header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 26px;border-bottom:1px solid var(--line)}.brand{font-size:23px;font-weight:850;letter-spacing:-.8px}.brand span{color:var(--mint)}.subtitle{font-size:11px;color:var(--muted);letter-spacing:1.5px;margin-top:4px;text-transform:uppercase}.tabs{display:flex;gap:7px;flex-wrap:wrap}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:20px;padding:20px;max-width:1600px;margin:auto}.left{display:flex;flex-direction:column;gap:14px;align-self:start}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px}.guide{padding:0;overflow:hidden}.guide summary{padding:17px;cursor:pointer;font-weight:750}.guide .inside{padding:0 18px 16px;color:var(--muted);line-height:1.6}.guide ol{padding-left:18px;margin:0}.guide li{margin:8px 0}h1{font-size:25px;margin:0 0 7px;letter-spacing:-.5px}h2{font-size:17px;margin:0 0 12px}h3{font-size:13px;margin:18px 0 10px;color:var(--muted)}p{line-height:1.5}.muted{color:var(--muted)}.small{font-size:12px}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.4px;color:var(--mint);font-weight:800;margin-bottom:8px}.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}.categories{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}.categories button{font-size:11px;padding:7px}.palette{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-height:390px;overflow:auto}.partButton{padding:8px 3px;background:#0d192b;font-size:10px;line-height:1.25;min-height:75px}.partButton svg{display:block;width:56px;height:36px;margin:0 auto 5px}.partButton[data-kind^="wheel-"] svg{width:54px;height:54px;margin:0 auto 4px}.partButton[data-kind^="wheel-"]{min-height:92px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{margin:14px 0}.control label{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:7px;color:var(--muted)}.control output{color:var(--text);font-weight:700}.check{display:flex;align-items:flex-start;gap:8px;line-height:1.4;margin:12px 0}.check input{margin-top:3px}.check span{display:block}.check small{display:block;color:var(--muted);margin-top:4px;font-size:11px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}.toolbar button{font-size:12px;padding:8px 11px}.stage{margin-top:15px;border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#081422}.stage canvas{display:block;width:100%;aspect-ratio:1000/520;touch-action:none}.windbar{padding:16px 20px;background:#102337;border-bottom:1px solid var(--line)}.windbar output{font-size:25px;font-weight:800;color:var(--mint)}.ticks{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}.pill{border:1px solid var(--line);border-radius:30px;padding:5px 9px;font-size:10px;color:var(--muted)}.live{color:var(--mint);font-size:11px}.stagefoot{padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:flex;gap:15px;justify-content:space-between;flex-wrap:wrap}.explain{border-left:3px solid var(--mint);background:#102a2b;padding:13px 16px;border-radius:0 10px 10px 0;margin-top:13px;line-height:1.5;font-size:12px;color:#c2e8df}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}.metric{padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px}.metric label{color:var(--muted);font-size:11px}.metric strong{display:block;font-size:25px;margin-top:7px;letter-spacing:-.5px}.metric small{color:var(--muted);font-size:11px}.statrow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.statrow:last-child{border:0}.tools{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}.tools button{font-size:11px;padding:8px 4px}.swatches{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}.swatches button{border-radius:50%;width:22px;height:22px;padding:0}.empty{padding:18px 2px;color:var(--muted);font-size:12px;line-height:1.6}.hidden{display:none!important}.footnote{font-size:11px;color:var(--muted);line-height:1.6;margin-top:14px}table{width:100%;border-collapse:collapse;font-size:11px}td,th{text-align:left;border-bottom:1px solid var(--line);padding:10px 6px}td button{padding:5px;font-size:10px}.scroll{overflow-x:auto}.notice{min-height:18px;font-size:11px;color:var(--gold);margin-top:7px}progress{width:100%;accent-color:var(--mint)}#chart{width:100%;height:150px;display:block}#layers{max-height:150px;overflow:auto;margin-top:8px}.layer{width:100%;text-align:left;font-size:11px;margin:3px 0;padding:7px 10px}.tip{background:#102337;border-radius:9px;padding:10px;font-size:11px;color:var(--muted);line-height:1.5}
+.metric .metricHelp{display:block;margin-top:11px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:#c6d6e7;line-height:1.5}.metric .metricExample{display:block;margin-top:7px;color:#b9e9dc;font-size:12px;line-height:1.5}.metric .metricExample b{color:var(--mint)}
+.additionalStats{margin-top:16px;padding:0;overflow:hidden}.additionalStats>summary{list-style:none;cursor:pointer;padding:18px;font-size:17px;font-weight:750;display:flex;justify-content:space-between;align-items:center;gap:12px}.additionalStats>summary::-webkit-details-marker{display:none}.additionalStats>summary:hover{color:var(--mint)}.additionalStats>summary:focus-visible{outline:2px solid var(--mint);outline-offset:-4px}.additionalChevron{color:var(--mint);font-size:20px;transition:transform .2s}.additionalStats[open] .additionalChevron{transform:rotate(180deg)}.additionalInner{padding:0 17px 17px}.additionalInner .metrics{margin:0 0 14px;grid-template-columns:repeat(2,minmax(0,1fr))}.additionalInner .two>.card{background:#0f1c2e}@media(max-width:650px){.additionalInner .two{grid-template-columns:1fr}.additionalInner .metrics{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div><div class="brand"><span>↗</span> Slipstream</div><div class="subtitle">Imagine · Build · Experiment</div></div>
+ <nav class="tabs"><button data-tab="design" class="active">01 · Design</button><button data-tab="wind">02 · Wind Tunnel</button><button data-tab="stats">03 · IRL Statistics</button></nav>
+</header>
+<div class="layout">
+ <div class="left">
+  <details class="card guide">
+   <summary>How to build your car</summary>
+   <div class="inside"><ol>
+    <li>Name your car, then add body shapes from Your Parts Studio.</li>
+    <li>Drag a part to move it. Use the blue handle to change its length, the gold handle to change its height, or the corner for both.</li>
+    <li>Hold <b>Shift</b> while resizing to keep proportions. Otherwise dimensions change independently.</li>
+    <li>Add windows, a windshield, wheels, lights, and axles. Every part can move, rotate, stretch, and change color.</li>
+    <li>Choose Photo windshield to insert a picture. Its outline and proportions are editable.</li>
+    <li>Parts cannot pass through the ground line, even when moved, resized, or rotated. Place tires using “Ground wheel” and leave space below the chassis for air.</li>
+    <li>Each grid square represents <b>6 inches (½ foot)</b>. Two squares equal 1 foot. Measurements and Snap both use this same scale.</li>
+    <li>Open Wind Tunnel. It starts at <b>0 mph</b>; move the slider to start the air.</li>
+    <li>The default <b>between-wheel section</b> shows a slice between the left and right tires. Ghosted tires are outside that slice; body and axle parts still block air.</li>
+    <li>Underbody emphasis adds brighter tracers to open gaps. It changes visibility, not the amount of simulated air.</li>
+    <li>Try changes and record results in your notebook. IRL Statistics contains classroom estimates in U.S. units.</li>
+   </ol><p class="small">Shortcuts: Delete removes a selected part. Ctrl/⌘ + D duplicates. Ctrl/⌘ + Z undoes.</p></div>
+  </details>
+  <aside class="card" id="designPanel">
+   <div class="eyebrow">Make it your own</div><h2>Your Parts Studio</h2>
+   <div class="categories" id="categories"></div><div class="palette" id="palette"></div>
+   <div class="row wrap" style="margin-top:12px"><button id="freehand">✎ Draw a shape</button><button id="upload">＋ Photo windshield</button></div>
+   <input id="photoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+   <div id="inspector"></div>
+   <h3>Layers · frontmost first</h3><div id="layers"></div>
+   <div class="row wrap" style="margin-top:14px"><button id="undo">Undo</button><button id="clear">Clear studio</button></div>
+  </aside>
+  <aside class="card hidden" id="windPanel">
+   <div class="eyebrow">Look beneath the chassis</div><h2>Wind Tunnel</h2>
+   <label class="check"><input type="checkbox" id="section" checked><span>Between-wheel section<small>Default: a center slice between the left and right tires. Ghosted wheels are outside the flow plane. Added axles remain solid obstacles.</small></span></label>
+   <label class="check"><input type="checkbox" id="under" checked><span>Highlight underbody airflow<small>Default: more bright tracers in open spaces below the chassis and between the axles.</small></span></label>
+   <div class="control"><label>Underbody tracer density <output id="densityOut">High</output></label><input type="range" id="density" min="1" max="3" step="1" value="3"></div>
+   <div class="control"><label for="direction">Wind direction</label><select id="direction"><option value="1">Left → right</option><option value="-1">Right → left</option></select></div>
+   <div class="control"><label for="quality">Flow resolution</label><select id="quality"><option value="240">Fast</option><option value="300" selected>Balanced</option><option value="380">Fine gaps</option></select></div>
+   <div class="control"><label>Air density <output id="rhoOut"></output></label><input id="rho" type="range" min=".05" max=".09" step=".0005" value=".0765"></div>
+   <button id="resetFlow">Restart flow at 0 mph</button>
+   <div class="tip" style="margin-top:15px"><b style="color:var(--mint)">Reading the flow</b><br>Mint → gold: slower → faster local flow.<br>Bright cyan: underbody tracers.<br>Swirling trails: recirculating wake.<br>Dashed wheels: outside the selected slice.</div>
+  </aside>
+  <aside class="card hidden" id="statsPanel">
+   <div class="eyebrow">Classroom estimates</div><h2>Road & vehicle</h2>
+   <div class="control"><label>Road speed <output id="roadOut"></output></label><input id="road" type="range" min="5" max="120" value="60"></div>
+   <button id="matchRoad">Match wind to road speed</button>
+   <div class="control"><label>Vehicle width <output id="widthOut"></output></label><input id="width" type="range" min="40" max="120" value="72"></div>
+   <div class="control"><label>Vehicle weight <output id="weightOut"></output></label><input id="weight" type="range" min="900" max="9000" step="50" value="3100"></div>
+   <div class="control"><label>Engine efficiency <output id="effOut"></output></label><input id="eff" type="range" min="15" max="42" value="27"></div>
+  </aside>
+ </div>
+ <main>
+  <div class="row between"><div><div class="eyebrow">Student engineering lab</div><h1 id="pageTitle">Create something only you could build.</h1></div><span id="count" class="pill">0 parts</span></div>
+  <label class="small muted" for="carName">Car name</label><input id="carName" placeholder="Untitled car" maxlength="60" style="margin-top:6px">
+  <section class="stage">
+   <div class="toolbar"><strong id="stageTitle">Untitled car · Design</strong><div class="row"><button id="grid" class="active">Grid on</button><button id="snap">Snap off</button><button id="pause" class="hidden">Pause flow</button></div></div>
+   <div id="windbar" class="windbar hidden">
+    <div class="row between"><div><div class="small muted">WIND SPEED</div><output id="windOut">0 mph</output></div><span id="live" class="live">Still air · move slider to start</span></div>
+    <input id="wind" type="range" min="0" max="120" value="0" step="1" aria-label="Wind speed in miles per hour">
+    <div class="ticks"><span>0 mph</span><span>30</span><span>60</span><span>90</span><span>120 mph</span></div>
+   </div>
+   <canvas id="scene" width="1000" height="520" aria-label="Car design and wind tunnel"></canvas>
+   <div class="stagefoot"><span id="stageHint">Blank canvas · choose a part to begin</span><span id="flowStatus">1 grid square = 6 in · 2 squares = 1 ft</span></div>
+  </section>
+  <div id="sectionNote" class="explain hidden"></div>
+  <div id="designHint" class="explain">Your canvas starts blank. Mix shapes freely, stretch each dimension independently, and place every wheel, window, light, and axle yourself.</div>
+   <div id="metrics" class="metrics hidden"></div>
+  <div id="results" class="hidden">
+   <section id="tripCard" class="card hidden" style="margin-top:14px"><div class="row between"><h2>Trip simulation</h2><button id="runTrip">Run trip</button></div><progress id="tripProgress" max="1" value="0"></progress><p id="tripText" class="small muted">Run a 100-mile trip using the current vehicle and road settings.</p></section>
+  </div>
+  <section class="card" style="margin-top:16px">
+   <div class="row between"><h2>Experiment notebook</h2><button id="record">Record this design</button></div>
+   <div class="scroll"><table><thead><tr><th>Car</th><th>Wind</th><th>Section</th><th>Clearance</th><th>MPG</th><th></th></tr></thead><tbody id="notebook"></tbody></table></div>
+   <div id="notice" class="notice"></div>
+  </section>
+  <details id="additionalStats" class="card additionalStats hidden">
+   <summary>Additional Statistics <span class="additionalChevron" aria-hidden="true">▾</span></summary>
+   <div class="additionalInner">
+    <div id="additionalMetrics" class="metrics hidden"></div>
+    <div class="two">
+     <section class="card"><h2>Physics in motion</h2><div id="physicsRows"></div></section>
+     <section class="card"><h2 id="chartTitle">Drag vs. wind speed</h2><canvas id="chart" width="480" height="180"></canvas><p class="small muted" id="chartHint"></p></section>
+    </div>
+   </div>
+  </details>
+  <details class="footnote"><summary>How the models work</summary><p>The tunnel uses a two-dimensional lattice-Boltzmann fluid solver with bounce-back solid boundaries. The default center section excludes outboard tires and includes the body and any added axles. Switch it off to test a solid wheel side silhouette. Extra tracers only highlight the existing velocity field; they do not force air into blocked gaps.</p><p>These are educational, normalized flow simulations, not validated three-dimensional automotive CFD. MPG, drag, and power are comparative estimates using a silhouette-based drag coefficient, an estimated frontal area, rolling resistance, road grade, and engine efficiency. Airflow around wheels in three dimensions, rotating wheels, and detailed suspension are not modeled. Lengths are shown in inches or feet, speed in mph, force in lbf, power in horsepower, and fuel in U.S. gallons.</p></details>
+ </main>
+</div>
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id),G=430,U=5.08,GRID=6*U,TAU=Math.PI*2;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const circle="M0 50A50 50 0 1 0 100 50A50 50 0 1 0 0 50Z";
+const rect="M0 0H100V100H0Z",round="M15 0H85Q100 0 100 15V85Q100 100 85 100H15Q0 100 0 85V15Q0 0 15 0Z";
+const definitions=[];
+function add(id,name,cat,path,w=150,h=85,color="#67edc3"){definitions.push({id,name,cat,path,w,h,color});}
+[
+["rectangle","Rectangle",rect],["rounded","Rounded box",round],["ellipse","Ellipse",circle],
+["capsule","Capsule","M25 0H75C108 0 108 100 75 100H25C-8 100 -8 0 25 0Z"],
+["triangle","Triangle","M50 0L100 100H0Z"],["right","Right triangle","M0 0L100 100H0Z"],
+["wedge","Wedge","M0 80L100 0V100H0Z"],["reverse","Reverse wedge","M0 0L100 80V100H0Z"],
+["trapezoid","Trapezoid","M25 0H75L100 100H0Z"],["slant","Slanted box","M30 0H100L70 100H0Z"],
+["diamond","Diamond","M50 0L100 50L50 100L0 50Z"],["pentagon","Pentagon","M50 0L100 38L81 100H19L0 38Z"],
+["hexagon","Hexagon","M25 0H75L100 50L75 100H25L0 50Z"],["octagon","Octagon","M30 0H70L100 30V70L70 100H30L0 70V30Z"],
+["arch","Arch","M0 100V50C0-17 100-17 100 50V100H75V55C75 20 25 20 25 55V100Z"],
+["dome","Dome","M0 100C0-34 100-34 100 100Z"],
+["drop","Teardrop","M0 50C0-16 75-16 100 50C75 116 0 116 0 50Z"],
+["nose","Long nose","M0 80Q35 0 100 0V100H0Z"],["fin","Fin","M0 100Q65 85 100 0V100Z"],
+["wing","Wing","M0 70Q40 0 100 35L92 60Q40 65 0 100Z"],
+["scoop","Scoop","M0 100L25 0H100L70 100Z"],
+["star","Star","M50 0L62 35L100 35L70 59L80 100L50 76L20 100L30 59L0 35L38 35Z"],
+["heart","Heart","M50 100C-35 45 0-25 50 20C100-25 135 45 50 100Z"],
+["quarter","Quarter circle","M0 0A100 100 0 0 1 100 100H0Z"],
+["half-circle","Half circle","M0 100A50 100 0 0 1 100 100Z"]
+].forEach(a=>add(...a.slice(0,2),"body",a[2],a[0]==="half-circle"?160:150,80));
+[
+["win-front","Front window","M30 0H100V100H0Z"],["win-rear","Rear window","M0 0H70L100 100H0Z"],
+["win-round","Round window",circle],["win-oval","Oval window",circle],
+["win-quarter","Quarter window","M100 0V100H0Z"],["win-split","Split window",round]
+].forEach(a=>add(a[0],a[1],"windows",a[2],90,65,"#82cfff"));
+[
+["shield-slant","Slanted windshield","M35 0H100L65 100H0Z"],["shield-curved","Curved windshield","M30 0Q90-5 100 25L70 100H0Z"],
+["shield-upright","Upright windshield",round],["shield-wide","Wide windshield","M20 0H80L100 100H0Z"],
+["shield-rear","Rear windshield","M0 0H65L100 100H35Z"]
+].forEach(a=>add(a[0],a[1],"windshields",a[2],100,75,"#83c8ef"));
+["Five-spoke","Multi-spoke","Aero disc","Classic tire","Off-road","Racing"].forEach((s,i)=>add(["wheel-five","wheel-multi","wheel-disc","wheel-classic","wheel-offroad","wheel-race"][i],s,"wheels",circle,76,76,"#26394d"));
+[
+["lightbar","Full light bar",round,145,12],["matrix","Matrix LEDs",rect,70,25],["pixels","Pixel lights",rect,65,25],
+["halo","Halo lights",circle,40,40],["laser","Laser-style",round,80,16],["split-led","Split LEDs",rect,75,28],
+["c-drl","C-shaped DRL","M100 0H25Q0 0 0 25V75Q0 100 25 100H100V75H30V25H100Z",45,40],
+["eyebrow","LED eyebrow","M0 0H100V30L15 100H0L70 30H0Z",75,20],
+["round-lamp","Round lamp",circle,35,35],["square-lamp","Square lamp",round,40,35],
+["slim-led","Slim LED",round,90,8],["tri-lamp","Triangle lamp","M0 0H100L50 100Z",45,30],
+["stacked","Vertical LEDs",round,18,65],["fog","Fog lamp",circle,25,25]
+].forEach(a=>add(a[0],a[1],"headlights",a[2],a[3],a[4],"#fff1ad"));
+[
+["tailbar","Rear light bar",round,140,12],["tail-round","Round taillight",circle,35,35],
+["tail-c","C taillight","M100 0H0V100H100V75H25V25H100Z",40,45],
+["tail-vertical","Vertical tail",round,15,65],["tail-pixel","Pixel tail",rect,65,22],
+["tail-arrow","Arrow tail","M0 0H45L100 50L45 100H0L55 50Z",50,32]
+].forEach(a=>add(a[0],a[1],"taillights",a[2],a[3],a[4],"#ff6683"));
+[
+["axle","Axle",round,25,18],["crossmember","Crossmember",rect,110,12],
+["mirror","Mirror",round,35,20],["spoiler","Spoiler","M0 0H100V25H65V100H50V25H0Z",120,45],
+["bumper","Bumper",round,110,20],["roofrack","Roof rack","M0 0H100V25H85V100H70V25H30V100H15V25H0Z",140,30],
+["rooflight","Roof light bar",round,100,15],["exhaust","Exhaust",round,40,12],
+["stripe","Stripe",rect,180,8],["handle","Door handle",round,25,8],["grille","Grille",round,65,32],
+["hoodvent","Hood vent","M0 100L25 0H100L75 100Z",70,20],["antenna","Antenna","M30 100L60 0L70 100Z",10,65],
+["roofbox","Roof box",round,150,35],["number","Number panel",round,50,50]
+].forEach(a=>add(a[0],a[1],"extras",a[2],a[3],a[4],"#93a7c1"));
+const catalog=Object.fromEntries(definitions.map(d=>[d.id,d]));
+let parts=[],selected=null,nextID=1,tab="design",category="body",name="",snap=false,showGrid=true,drawMode=false,freePoints=[],drag=null,history=[],records=[],photoTarget=null;
+let cfg={air:0,road:60,width:72,weight:3100,rho:.0765,grade:0,crr:.012,eff:27,distance:100,dir:1};
+let section=true,under=true,density=3,paused=false,flow=null,particles=[],lastTime=0,lastRead=0,trip=null,errorText="";
+const scene=$("scene"),ctx=scene.getContext("2d");
+const trail=document.createElement("canvas"),tc=trail.getContext("2d");
+const maskCanvas=document.createElement("canvas"),mc=maskCanvas.getContext("2d",{willReadFrequently:true});
+const imageCache=new Map();
+const D={left:-240,top:-145,width:1480,height:660};
+const clone=x=>JSON.parse(JSON.stringify(x));
+const selectedPart=()=>parts.find(p=>p.id===selected);
+const isWheel=p=>catalog[p.kind]?.cat==="wheels";
+function def(p){return catalog[p.kind]||{name:"Custom shape",cat:"body",path:p.path||rect};}
+function path(p){return new Path2D(p.path||def(p).path||rect);}
+function checkpoint(){history.push(clone({parts,name,cfg}));if(history.length>30)history.shift();}
+function changed(){flow=null;errorText="";tc.clearRect(0,0,trail.width,trail.height);trip=null;updateInspector();updateLayers();updateUI();updateResults();}
+function create(kind){
+ if(parts.length>=120){$("notice").textContent="The studio supports up to 120 parts.";return;}
+ const d=catalog[kind];checkpoint();const p={id:nextID++,kind,x:500,y:isWheel({kind})?G-d.h/2:280,w:d.w,h:d.h,rot:0,color:d.color,flip:false};
+ parts.push(keepAboveGround(p));selected=p.id;drawMode=false;changed();
+}
+function bounds(list=parts){
+ if(!list.length)return null;
+ let l=Infinity,r=-Infinity,t=Infinity,b=-Infinity;
+ for(const p of list){const a=p.rot*Math.PI/180,c=Math.abs(Math.cos(a)),s=Math.abs(Math.sin(a)),rx=(p.w*c+p.h*s)/2,ry=(p.w*s+p.h*c)/2;l=Math.min(l,p.x-rx);r=Math.max(r,p.x+rx);t=Math.min(t,p.y-ry);b=Math.max(b,p.y+ry);}
+ return {l,r,t,b,w:r-l,h:b-t};
+}
+// Keep the entire rotated rectangular envelope of a part on or above the ground.
+// Using the envelope also safely handles triangles, freehand shapes, and uploaded photos.
+function bottomRadius(p){const a=p.rot*Math.PI/180;return (Math.abs(p.w*Math.sin(a))+Math.abs(p.h*Math.cos(a)))/2;}
+function keepAboveGround(p){p.y=Math.min(p.y,G-bottomRadius(p));return p;}
+function groundClearance(){const b=bounds(parts.filter(p=>!isWheel(p)));return b?Math.max(0,(G-b.b)/U):null;}
+function getImage(p){if(!p.image)return null;let img=imageCache.get(p.image);if(!img){img=new Image();img.src=p.image;imageCache.set(p.image,img);}return img;}
+function paintPart(c,p,solid=false,ghost=false){
+ c.save();c.translate(p.x,p.y);c.rotate(p.rot*Math.PI/180);c.scale(p.flip?-p.w/100:p.w/100,p.h/100);c.translate(-50,-50);
+ const pa=path(p);
+ if(solid){c.fillStyle="#fff";c.fill(pa);c.restore();return;}
+ c.globalAlpha=ghost?.2:1;c.fillStyle=p.color;c.fill(pa);
+ if(p.image){const im=getImage(p);if(im?.complete){c.save();c.clip(pa);c.drawImage(im,0,0,100,100);c.restore();}}
+ c.strokeStyle=ghost?"#a1b3cc":"#cce8f055";c.lineWidth=1.5;c.stroke(pa);
+ const d=def(p);
+ if(d.cat==="wheels"){
+  c.fillStyle="#111e30";c.beginPath();c.arc(50,50,34,0,TAU);c.fill();c.strokeStyle="#c1d0e2";c.lineWidth=3;
+  if(p.kind==="wheel-disc"||p.kind==="wheel-classic"){c.fillStyle="#91a3b8";c.beginPath();c.arc(50,50,29,0,TAU);c.fill();}
+  else {const n=p.kind==="wheel-multi"?10:p.kind==="wheel-race"?6:5;for(let i=0;i<n;i++){const a=i*TAU/n;c.beginPath();c.moveTo(50,50);c.lineTo(50+31*Math.cos(a),50+31*Math.sin(a));c.stroke();}}
+  c.fillStyle="#c4d8e4";c.beginPath();c.arc(50,50,8,0,TAU);c.fill();
+ }else if(d.cat==="headlights"||d.cat==="taillights"){
+  if(p.kind.includes("pixel")||p.kind==="matrix"){c.fillStyle="#0b1220";for(let x=20;x<100;x+=25)c.fillRect(x,0,4,100);c.fillRect(0,46,100,8);}
+  else if(p.kind==="halo"){c.fillStyle="#142034";c.beginPath();c.arc(50,50,30,0,TAU);c.fill();}
+  else {c.strokeStyle="#ffffff88";c.lineWidth=3;c.beginPath();c.moveTo(15,35);c.lineTo(85,35);c.stroke();}
+ }else if(d.cat==="windows"||d.cat==="windshields"){
+  c.save();c.clip(pa);c.strokeStyle="#ffffff55";c.lineWidth=5;c.beginPath();c.moveTo(20,80);c.lineTo(60,15);c.stroke();if(p.kind==="win-split"){c.strokeStyle="#0b1220";c.lineWidth=6;c.beginPath();c.moveTo(50,0);c.lineTo(50,100);c.stroke();}c.restore();
+ }else if(p.kind==="grille"){c.strokeStyle="#0a1420";c.lineWidth=5;for(let y=20;y<100;y+=20){c.beginPath();c.moveTo(10,y);c.lineTo(90,y);c.stroke();}}
+ if(ghost){c.globalAlpha=.75;c.setLineDash([6,5]);c.strokeStyle="#a1b3cc";c.lineWidth=1.7;c.stroke(pa);}
+ c.restore();
+}
+function worldPoint(x,y){if(tab==="design")return {x,y};return {x:D.left+x/1000*D.width,y:D.top+y/520*D.height};}
+function pointer(e){const r=scene.getBoundingClientRect();return worldPoint((e.clientX-r.left)/r.width*1000,(e.clientY-r.top)/r.height*520);}
+function local(p,pt){const a=-p.rot*Math.PI/180,dx=pt.x-p.x,dy=pt.y-p.y;return {x:dx*Math.cos(a)-dy*Math.sin(a),y:dx*Math.sin(a)+dy*Math.cos(a)};}
+function global(p,x,y){const a=p.rot*Math.PI/180;return {x:p.x+x*Math.cos(a)-y*Math.sin(a),y:p.y+x*Math.sin(a)+y*Math.cos(a)};}
+function hit(p,pt){const q=local(p,pt);const x=(p.flip?-q.x:q.x)/p.w*100+50,y=q.y/p.h*100+50;return ctx.isPointInPath(path(p),x,y);}
+function handles(p){return [
+ {type:"width",...global(p,p.w/2,0),color:"#80bdff"},
+ {type:"height",...global(p,0,p.h/2),color:"#ffc184"},
+ {type:"both",...global(p,p.w/2,p.h/2),color:"#67edc3"},
+ {type:"rotate",...global(p,0,-p.h/2-25),color:"#e7efff"}
+];}
+function drawScene(){
+ const dpr=Math.min(devicePixelRatio||1,2),cw=Math.max(400,Math.round(scene.clientWidth*dpr)),ch=Math.round(cw*520/1000);
+ if(scene.width!==cw||scene.height!==ch){scene.width=cw;scene.height=ch;}
+ ctx.setTransform(cw/1000,0,0,ch/520,0,0);ctx.fillStyle="#081422";ctx.fillRect(0,0,1000,520);ctx.save();
+ if(tab!=="design"){ctx.scale(1000/D.width,520/D.height);ctx.translate(-D.left,-D.top);}
+ const view=tab==="design"?{l:0,t:0,r:1000,b:520}:{l:D.left,t:D.top,r:D.left+D.width,b:D.top+D.height};
+ if(showGrid){
+  // One visible square is exactly 6 inches, anchored to the ground line.
+  // Every second line is brighter to mark 12 inches (1 foot).
+  const drawGridLines=(major)=>{
+   ctx.beginPath();ctx.strokeStyle=major?"#45627b88":"#29415a70";ctx.lineWidth=major?1.05:.7;
+   const firstX=Math.floor(view.l/GRID);
+   for(let i=firstX;i*GRID<view.r;i++)if((i%2===0)===major){const x=i*GRID;ctx.moveTo(x,view.t);ctx.lineTo(x,view.b);}
+   for(let i=0;G-i*GRID>view.t;i++)if((i%2===0)===major){const y=G-i*GRID;ctx.moveTo(view.l,y);ctx.lineTo(view.r,y);}
+   ctx.stroke();
+  };
+  drawGridLines(false);drawGridLines(true);
+ }
+ if(tab!=="design"&&flow&&cfg.air>0)ctx.drawImage(trail,D.left,D.top,D.width,D.height);
+ ctx.fillStyle="#142431";ctx.fillRect(view.l,G,view.r-view.l,view.b-G);
+ ctx.strokeStyle="#314253";ctx.lineWidth=1;ctx.beginPath();for(let x=view.l-100;x<view.r;x+=14){ctx.moveTo(x,G+45);ctx.lineTo(x+45,G);}ctx.stroke();
+ ctx.strokeStyle="#ffc184";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(view.l,G);ctx.lineTo(view.r,G);ctx.stroke();
+ ctx.fillStyle="#ffc184";ctx.font="10px system-ui";ctx.fillText("GROUND · 0 IN",view.l+15,G+18);
+ for(const p of parts)paintPart(ctx,p,false,tab!=="design"&&section&&isWheel(p));
+ const body=bounds(parts.filter(p=>!isWheel(p))),clear=groundClearance();
+ if(body&&clear>0){const x=body.r+18;ctx.strokeStyle="#67edc3";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,body.b);ctx.lineTo(x,G);ctx.moveTo(x-5,body.b);ctx.lineTo(x+5,body.b);ctx.moveTo(x-5,G);ctx.lineTo(x+5,G);ctx.stroke();ctx.fillStyle="#67edc3";ctx.font="11px system-ui";ctx.fillText(clear.toFixed(1)+" in",x+7,(G+body.b)/2+4);}
+ if(!parts.length){ctx.fillStyle="#a1b3cc";ctx.textAlign="center";ctx.font="22px system-ui";ctx.fillText(tab==="design"?"Your next idea starts here.":"Build a car in the Design tab.",500,220);ctx.font="13px system-ui";ctx.fillText(tab==="design"?"Choose any shape from Your Parts Studio.":"Then move the wind-speed slider to begin.",500,247);ctx.textAlign="left";}
+ if(tab==="design"){
+  const p=selectedPart();
+  if(p){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.strokeStyle="#67edc3";ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.strokeRect(-p.w/2-3,-p.h/2-3,p.w+6,p.h+6);ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(0,-p.h/2);ctx.lineTo(0,-p.h/2-25);ctx.stroke();ctx.restore();for(const h of handles(p)){ctx.fillStyle=h.color;ctx.strokeStyle="#07121f";ctx.lineWidth=2;ctx.beginPath();ctx.arc(h.x,h.y,6,0,TAU);ctx.fill();ctx.stroke();}}
+  if(freePoints.length){ctx.strokeStyle="#67edc3";ctx.lineWidth=2;ctx.beginPath();freePoints.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();}
+ }
+ ctx.restore();
+}
+const categoryNames={body:"Body",windows:"Windows",windshields:"Windshields",wheels:"Wheels",headlights:"Headlights",taillights:"Taillights",extras:"More + axles"};
+// The studio preview must show the spoke/tire pattern, not just a plain circle.
+// These SVG wheel icons mirror the wheel types painted on the main design canvas.
+function wheelPreview(d){
+ const disc=d.id==="wheel-disc",classic=d.id==="wheel-classic",multi=d.id==="wheel-multi",race=d.id==="wheel-race",offroad=d.id==="wheel-offroad";
+ const n=multi?10:race?6:5;
+ const rim=(disc||classic)?`<circle cx="50" cy="50" r="29" fill="${disc?"#aab9c8":"#91a3b8"}" stroke="#c1d0e2" stroke-width="2"/>`:
+   Array.from({length:n},(_,i)=>{const a=i*Math.PI*2/n;return `<line x1="50" y1="50" x2="${(50+30*Math.cos(a)).toFixed(2)}" y2="${(50+30*Math.sin(a)).toFixed(2)}" stroke="#c1d0e2" stroke-width="${multi?2.5:4}" stroke-linecap="round"/>`;}).join("");
+ const tread=offroad?Array.from({length:12},(_,i)=>`<rect x="45" y="3" width="10" height="7" rx="2" fill="#8496a9" transform="rotate(${i*30} 50 50)"/>`).join(""):"";
+ const decor=disc?'<circle cx="50" cy="50" r="22" fill="none" stroke="#647b90" stroke-width="2"/><circle cx="50" cy="50" r="15" fill="none" stroke="#d4e0e9" stroke-width="1.5"/>':classic?Array.from({length:8},(_,i)=>{const a=i*Math.PI/4;return `<circle cx="${(50+20*Math.cos(a)).toFixed(1)}" cy="${(50+20*Math.sin(a)).toFixed(1)}" r="3" fill="#26394d"/>`;}).join(""):"";
+ return `<svg aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><circle cx="50" cy="50" r="49" fill="#26394d" stroke="#788da3" stroke-width="2"/>${tread}<circle cx="50" cy="50" r="37" fill="#101b2a" stroke="#677c91" stroke-width="2"/>${rim}${decor}<circle cx="50" cy="50" r="8" fill="#c4d8e4" stroke="#526d82" stroke-width="2"/></svg>`;
+}
+function renderPalette(){
+ $("categories").innerHTML=Object.entries(categoryNames).map(([id,n])=>`<button data-cat="${id}" class="${id===category?"active":""}">${n}</button>`).join("");
+ $("palette").innerHTML=definitions.filter(d=>d.cat===category).map(d=>`<button class="partButton" data-kind="${d.id}" title="Add ${d.name}">${d.cat==="wheels"?wheelPreview(d):`<svg viewBox="-5 -5 110 110" preserveAspectRatio="none"><path d="${d.path}" fill="${d.color}" stroke="#ffffff44" stroke-width="2"/></svg>`}${d.name}</button>`).join("");
+}
+$("categories").onclick=e=>{const b=e.target.closest("[data-cat]");if(b){category=b.dataset.cat;renderPalette();}};
+$("palette").onclick=e=>{const b=e.target.closest("[data-kind]");if(b)create(b.dataset.kind);};
+function updateInspector(){
+ const p=selectedPart();
+ if(!p){$("inspector").innerHTML='<div class="empty">Select a part to change its size, angle, color, and layer.</div>';return;}
+ $("inspector").innerHTML=`<h3>${esc(def(p).name)} · selected</h3><div class="two"><div class="control"><label>Length (in)</label><input id="partW" type="number" min=".5" max="370" step=".5" value="${(p.w/U).toFixed(1)}"></div><div class="control"><label>Height (in)</label><input id="partH" type="number" min=".5" max="170" step=".5" value="${(p.h/U).toFixed(1)}"></div></div><div class="control"><label>Rotation <output>${Math.round(p.rot)}°</output></label><input id="partR" type="range" min="-180" max="180" step="1" value="${p.rot}"></div><div class="control"><label>Part color</label><input id="partColor" type="color" value="${p.color}"></div><div class="swatches">${["#67edc3","#80bdff","#ff6683","#ffc184","#bda0ff","#ffffff","#26394d"].map(c=>`<button data-color="${c}" style="background:${c}" aria-label="Color ${c}"></button>`).join("")}</div>${p.image?'<div class="control"><label>Photo outline</label><select id="photoFrame"><option value="shield-wide">Wide windshield</option><option value="rounded">Rounded rectangle</option><option value="ellipse">Oval</option><option value="shield-slant">Slanted windshield</option><option value="rectangle">Rectangle</option></select></div>':""}<div class="tools"><button data-act="duplicate">Duplicate</button><button data-act="flip">Flip</button><button data-act="front">Bring forward</button><button data-act="back">Send backward</button>${isWheel(p)?'<button data-act="ground">Ground wheel</button>':""}${p.image?'<button data-act="replace">Replace photo</button>':""}<button data-act="delete">Delete part</button></div><div class="small muted" style="margin-top:10px">Independent sizing · hold Shift to lock proportions.</div>`;
+ for(const [id,key] of [["partW","w"],["partH","h"]])$(id).onchange=e=>{checkpoint();const v=clamp(Number(e.target.value)||1,.5,key==="w"?370:170)*U,ratio=v/p[key];if(shiftDown){p.w=clamp(p.w*ratio,U/2,940);p.h=clamp(p.h*ratio,U/2,430);}else p[key]=v;keepAboveGround(p);changed();};
+ $("partR").onpointerdown=checkpoint;$("partR").oninput=e=>{p.rot=+e.target.value;keepAboveGround(p);flow=null;e.target.previousElementSibling.querySelector("output").textContent=p.rot+"°";};
+ $("partR").onchange=changed;$("partColor").onchange=e=>{checkpoint();p.color=e.target.value;changed();};
+ if(p.image){$("photoFrame").value=p.kind;$("photoFrame").onchange=e=>{checkpoint();p.kind=e.target.value;changed();};}
+}
+$("inspector").onclick=e=>{
+ const c=e.target.closest("[data-color]");if(c){checkpoint();selectedPart().color=c.dataset.color;changed();return;}
+ const b=e.target.closest("[data-act]");if(b)action(b.dataset.act);
+};
+function action(a){
+ const p=selectedPart();if(!p)return;
+ if(a==="replace"){photoTarget=p.id;$("photoFile").click();return;}
+ checkpoint();const i=parts.indexOf(p);
+ if(a==="duplicate"){const copy=clone(p);copy.id=nextID++;copy.x=clamp(copy.x+20,0,1000);copy.y=copy.y-20;parts.push(keepAboveGround(copy));selected=copy.id;}
+ if(a==="delete"){parts.splice(i,1);selected=null;}
+ if(a==="flip")p.flip=!p.flip;
+ if(a==="front"&&i<parts.length-1)[parts[i],parts[i+1]]=[parts[i+1],parts[i]];
+ if(a==="back"&&i>0)[parts[i],parts[i-1]]=[parts[i-1],parts[i]];
+ if(a==="ground")p.y=G-bottomRadius(p);
+ changed();
+}
+function updateLayers(){$("layers").innerHTML=[...parts].reverse().map(p=>`<button class="layer ${p.id===selected?"active":""}" data-id="${p.id}">${esc(def(p).name)}${p.image?" · photo":""}</button>`).join("");}
+$("layers").onclick=e=>{const b=e.target.closest("[data-id]");if(b){selected=+b.dataset.id;updateInspector();updateLayers();}};
+let shiftDown=false;
+scene.onpointerdown=e=>{
+ if(tab!=="design")return;e.preventDefault();scene.setPointerCapture(e.pointerId);
+ const pt=pointer(e);if(drawMode){freePoints=[{...pt,y:Math.min(pt.y,G)}];drag={type:"draw"};return;}
+ const p=selectedPart(),handle=p&&handles(p).find(h=>Math.hypot(pt.x-h.x,pt.y-h.y)<13);
+ if(handle){checkpoint();drag={type:handle.type,start:pt,original:clone(p)};return;}
+ const target=[...parts].reverse().find(p=>hit(p,pt));
+ selected=target?.id??null;updateInspector();updateLayers();
+ if(target){checkpoint();drag={type:"move",start:pt,original:clone(target)};}
+};
+scene.onpointermove=e=>{
+ if(!drag)return;const pt=pointer(e);
+ if(drag.type==="draw"){const clamped={...pt,y:Math.min(pt.y,G)};if(Math.hypot(clamped.x-freePoints.at(-1).x,clamped.y-freePoints.at(-1).y)>3)freePoints.push(clamped);return;}
+ const p=selectedPart(),o=drag.original;if(!p)return;
+ if(drag.type==="move"){p.x=clamp(o.x+pt.x-drag.start.x,0,1000);p.y=o.y+pt.y-drag.start.y;if(snap){p.x=Math.round(p.x/GRID)*GRID;p.y=G+Math.round((p.y-G)/GRID)*GRID;}}
+ else if(drag.type==="rotate"){p.rot=clamp(Math.atan2(pt.y-p.y,pt.x-p.x)*180/Math.PI+90,-180,180);if(e.shiftKey)p.rot=Math.round(p.rot/15)*15;}
+ else {
+  const q=local(o,pt),w=clamp(q.x*2,U/2,940),h=clamp(q.y*2,U/2,430);
+  if(e.shiftKey){let scale=drag.type==="height"?h/o.h:drag.type==="width"?w/o.w:Math.max(w/o.w,h/o.h);scale=clamp(scale,Math.max(U/2/o.w,U/2/o.h),Math.min(940/o.w,430/o.h));p.w=o.w*scale;p.h=o.h*scale;}
+  else{if(drag.type!=="height")p.w=w;if(drag.type!=="width")p.h=h;}
+ }
+ keepAboveGround(p);
+ flow=null;
+};
+function release(){
+ if(!drag)return;
+ if(drag.type==="draw"&&freePoints.length>3){
+  const xs=freePoints.map(p=>p.x),ys=freePoints.map(p=>p.y),l=Math.min(...xs),t=Math.min(...ys),w=Math.max(...xs)-l,h=Math.max(...ys)-t;
+  if(w>3&&h>3){checkpoint();const p={id:nextID++,kind:"custom",path:freePoints.map((p,i)=>(i?"L":"M")+((p.x-l)/w*100).toFixed(2)+" "+((p.y-t)/h*100).toFixed(2)).join("")+"Z",x:l+w/2,y:t+h/2,w,h,rot:0,flip:false,color:"#67edc3"};parts.push(keepAboveGround(p));selected=p.id;}
+  drawMode=false;
+ }
+ drag=null;freePoints=[];changed();
+}
+scene.onpointerup=release;scene.onpointercancel=release;
+$("freehand").onclick=()=>{drawMode=!drawMode;$("freehand").classList.toggle("active",drawMode);$("stageHint").textContent=drawMode?"Draw a closed outline on the canvas.":"Drag parts or resize with the handles.";};
+$("upload").onclick=()=>{photoTarget=null;$("photoFile").click();};
+$("photoFile").onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ const url=URL.createObjectURL(file);
+ try{
+  const image=new Image();image.src=url;await image.decode();
+  const c=document.createElement("canvas"),scale=Math.min(1,640/Math.max(image.width,image.height));c.width=Math.round(image.width*scale);c.height=Math.round(image.height*scale);
+  const cc=c.getContext("2d");cc.fillStyle="#142034";cc.fillRect(0,0,c.width,c.height);cc.drawImage(image,0,0,c.width,c.height);
+  checkpoint();let p=parts.find(p=>p.id===photoTarget);
+  if(!p){p={id:nextID++,kind:"shield-wide",x:500,y:245,w:140,h:100,rot:0,flip:false,color:"#83c8ef"};parts.push(p);}
+  p.image=c.toDataURL("image/jpeg",.85);keepAboveGround(p);selected=p.id;changed();
+ }catch{$("notice").textContent="That image could not be opened. Try a JPEG, PNG, or WebP image.";}
+ finally{URL.revokeObjectURL(url);e.target.value="";}
+};
+function undo(){const old=history.pop();if(!old)return;parts=old.parts;parts.forEach(keepAboveGround);name=old.name;cfg=old.cfg;selected=null;$("carName").value=name;syncControls();changed();}
+$("undo").onclick=undo;$("clear").onclick=()=>{checkpoint();parts=[];selected=null;changed();};
+document.addEventListener("keydown",e=>{
+ shiftDown=e.shiftKey;
+ if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();undo();}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="d"){e.preventDefault();action("duplicate");}
+ if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();action("delete");}
+});
+document.addEventListener("keyup",e=>shiftDown=e.shiftKey);window.addEventListener("blur",()=>shiftDown=false);
+$("carName").oninput=e=>{name=e.target.value;updateUI();};
+$("grid").onclick=()=>{showGrid=!showGrid;updateUI();};
+$("snap").onclick=()=>{snap=!snap;updateUI();};
+
+class Flow{
+ constructor(w,h,mask,wind=.075,tau=.59){
+  Object.assign(this,{w,h,n:w*h,mask,wind,tau,steps:0,meanForce:0});
+  this.cx=[0,1,0,-1,0,1,-1,-1,1];this.cy=[0,0,1,0,-1,1,1,-1,-1];this.opp=[0,3,4,1,2,7,8,5,6];this.wt=[4/9,1/9,1/9,1/9,1/9,1/36,1/36,1/36,1/36];
+  const n=this.n;this.f=new Float32Array(9*n);this.g=new Float32Array(9*n);this.ux=new Float32Array(n);this.uy=new Float32Array(n);this.rho=new Float32Array(n);
+  for(let k=0;k<n;k++){this.rho[k]=1;const u=mask[k]?0:wind;this.ux[k]=u;for(let q=0;q<9;q++){const z=this.cx[q]*u;this.f[q*n+k]=this.wt[q]*(1+3*z+4.5*z*z-1.5*u*u);}}
+ }
+ step(){
+  const {w,h,n,mask,cx,cy,opp,wt}=this,f=this.f,g=this.g,omega=1/this.tau;g.fill(0);let force=0;
+  for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+   const k=x+y*w;if(mask[k])continue;let rho=0,vx=0,vy=0;
+   for(let q=0;q<9;q++){const z=f[q*n+k];rho+=z;vx+=z*cx[q];vy+=z*cy[q];}
+   if(!Number.isFinite(rho)||rho<.2||rho>3)throw Error("density");vx/=rho;vy/=rho;
+   if(vx*vx+vy*vy>.25)throw Error("velocity");
+   this.ux[k]=vx;this.uy[k]=vy;this.rho[k]=rho;const v2=vx*vx+vy*vy;
+   for(let q=0;q<9;q++){
+    const dot=cx[q]*vx+cy[q]*vy,eq=wt[q]*rho*(1+3*dot+4.5*dot*dot-1.5*v2),z=f[q*n+k]+omega*(eq-f[q*n+k]),to=k+cx[q]+cy[q]*w;
+    const hit=mask[to]||(cx[q]&&cy[q]&&(mask[k+cx[q]]||mask[k+cy[q]*w]));
+    if(hit){g[opp[q]*n+k]=z;if(hit===1)force+=2*z*cx[q];}else g[q*n+to]=z;
+   }
+  }
+  const inlet=this.wind>=0?1:w-2,out=this.wind>=0?w-2:1,near=this.wind>=0?w-3:2,u=this.wind;
+  for(let y=1;y<h-1;y++){const k=inlet+y*w,o=out+y*w,b=near+y*w;if(!mask[k])for(let q=0;q<9;q++){const z=cx[q]*u;g[q*n+k]=wt[q]*(1+3*z+4.5*z*z-1.5*u*u);}if(!mask[o])for(let q=0;q<9;q++)g[q*n+o]=g[q*n+b];}
+  this.f=g;this.g=f;this.meanForce=this.steps?this.meanForce*.985+force*.015:force;this.steps++;
+ }
+ sample(x,y){
+  const x0=Math.floor(x-.5),y0=Math.floor(y-.5),fx=x-.5-x0,fy=y-.5-y0;
+  if(x0<1||y0<1||x0>=this.w-2||y0>=this.h-2)return {x:0,y:0};
+  let u=0,v=0;for(let j=0;j<2;j++)for(let i=0;i<2;i++){const k=x0+i+(y0+j)*this.w,a=(i?fx:1-fx)*(j?fy:1-fy);u+=this.ux[k]*a;v+=this.uy[k]*a;}return {x:u,y:v};
+ }
+ clear(x,y,nx=x,ny=y){
+  const count=Math.ceil(Math.hypot(nx-x,ny-y)/.18)+1;
+  for(let i=0;i<=count;i++){const xx=x+(nx-x)*i/count,yy=y+(ny-y)*i/count;if(xx<1.6||yy<1.6||xx>=this.w-2||yy>=this.h-2||this.mask[Math.floor(xx)+Math.floor(yy)*this.w])return false;}return true;
+ }
+}
+function latticeWind(){return cfg.air===0?0:cfg.dir*(.025+.06*cfg.air/120);}
+function buildFlow(){
+ const w=+$("quality").value,h=Math.round(w*D.height/D.width),mask=new Uint8Array(w*h);
+ maskCanvas.width=w;maskCanvas.height=h;mc.clearRect(0,0,w,h);
+ mc.save();mc.scale(w/D.width,h/D.height);mc.translate(-D.left,-D.top);
+ for(const p of parts)if(!(section&&isWheel(p)))paintPart(mc,p,true);
+ mc.restore();const data=mc.getImageData(0,0,w,h);
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+  const k=x+y*w,wy=D.top+(y+.5)/h*D.height;
+  mask[k]=x===0||y===0||x===w-1||y===h-1||wy>=G?2:data.data[k*4+3]>12?1:0;
+  data.data[k*4]=255;data.data[k*4+1]=255;data.data[k*4+2]=255;data.data[k*4+3]=mask[k]?255:0;
+ }
+ mc.putImageData(data,0,0);
+ flow=new Flow(w,h,mask,latticeWind());trail.width=w*3;trail.height=h*3;
+ particles=Array.from({length:1600+(under?density*450:0)},()=>newParticle(true));errorText="";
+}
+function bodyBand(){
+ const b=bounds(parts.filter(p=>!isWheel(p)));
+ if(!b)return null;
+ // The lower body envelope defines the clearance band. Axles remain in the collision mask.
+ const chassis=bounds(parts.filter(p=>!isWheel(p)&&p.kind!=="axle"&&p.kind!=="crossmember"))||b;
+ return {l:chassis.l-140,r:chassis.r+180,t:Math.max(G-160,Math.min(chassis.b,G-8)),b:G-3};
+}
+function newParticle(initial=false){
+ const f=flow,band=bodyBand(),bright=under&&band&&Math.random()<.55;
+ for(let attempt=0;attempt<65;attempt++){
+  let x,y;
+  if(bright&&attempt<45){
+   const wx=band.l+Math.random()*(band.r-band.l),wy=band.t+Math.random()*(band.b-band.t);
+   x=(wx-D.left)/D.width*f.w;y=(wy-D.top)/D.height*f.h;
+  }else{
+   x=!initial&&Math.random()<.18?(cfg.dir>0?2.5:f.w-3):2+Math.random()*(f.w-5);
+   y=2+Math.random()*((G-D.top)/D.height*f.h-4);
+  }
+  if(f.clear(x,y)){const life=1.3+Math.random()*3;return {x,y,life,age:initial?Math.random()*life:0,bright:!!bright,stalled:0};}
+ }
+ return {x:3,y:3,life:1,age:0,bright:false,stalled:0};
+}
+function drawFlow(steps,dt){
+ if(!flow||cfg.air===0)return;
+ const f=flow,ref=Math.max(.001,Math.abs(f.wind)),travel=steps*(cfg.air/60)*(.06/ref)*2.2;
+ tc.save();tc.setTransform(1,0,0,1,0,0);tc.globalCompositeOperation="destination-out";tc.fillStyle=`rgba(0,0,0,${1-Math.exp(-dt/.44)})`;tc.fillRect(0,0,trail.width,trail.height);tc.restore();
+ tc.save();tc.scale(3,3);tc.lineCap="round";
+ for(let i=0;i<particles.length;i++){
+  let p=particles[i];p.age+=dt;const v=f.sample(p.x,p.y),speed=Math.hypot(v.x,v.y);
+  p.stalled=speed<.0004?p.stalled+dt:0;
+  const mid=f.sample(p.x+v.x*travel*.5,p.y+v.y*travel*.5),nx=p.x+mid.x*travel,ny=p.y+mid.y*travel;
+  if(p.age>p.life||p.stalled>.4||!f.clear(p.x,p.y,nx,ny)){particles[i]=newParticle();continue;}
+  const t=clamp(speed/(ref*1.65),0,1);
+  tc.strokeStyle=p.bright?`hsla(${174-70*t},95%,${66+12*t}%,.95)`:`hsla(${165-110*t},75%,65%,.65)`;
+  tc.lineWidth=p.bright?.48:.27;tc.beginPath();tc.moveTo(p.x,p.y);tc.lineTo(nx,ny);tc.stroke();p.x=nx;p.y=ny;
+ }
+ tc.restore();
+ // Exact solid mask removes trail edges at obstacles, including axle surfaces and the ground.
+ tc.save();tc.globalCompositeOperation="destination-out";tc.imageSmoothingEnabled=false;tc.drawImage(maskCanvas,0,0,trail.width,trail.height);tc.restore();
+}
+function setWind(v){
+ const old=cfg.air;cfg.air=clamp(Number(v)||0,0,120);
+ if(flow&&old>0&&cfg.air>0)flow.wind=latticeWind();else{flow=null;tc.clearRect(0,0,trail.width,trail.height);}
+ errorText="";trip=null;syncControls();updateUI();updateResults();
+}
+$("wind").oninput=e=>setWind(e.target.value);
+$("pause").onclick=()=>{paused=!paused;updateUI();};
+$("section").onchange=e=>{section=e.target.checked;flow=null;updateUI();updateResults();};
+$("under").onchange=e=>{under=e.target.checked;particles=flow?Array.from({length:1600+(under?density*450:0)},()=>newParticle(true)):[];updateUI();};
+$("density").oninput=e=>{density=+e.target.value;$("densityOut").textContent=["","Low","Medium","High"][density];if(flow)particles=Array.from({length:1600+(under?density*450:0)},()=>newParticle(true));};
+$("direction").onchange=e=>{cfg.dir=+e.target.value;flow=null;updateResults();};
+$("quality").onchange=()=>flow=null;
+$("resetFlow").onclick=()=>{paused=false;setWind(0);};
+$("matchRoad").onclick=()=>{cfg.dir=1;setWind(cfg.road);};
+const formats={road:v=>v+" mph",width:v=>v+" in",weight:v=>v.toLocaleString()+" lb",rho:v=>v.toFixed(4)+" lb/ft³",eff:v=>v+"%"};
+for(const key of Object.keys(formats))$(key).oninput=e=>{cfg[key]=+e.target.value;$(key+"Out").textContent=formats[key](cfg[key]);trip=null;updateResults();};
+function syncControls(){for(const key of Object.keys(formats)){$(key).value=cfg[key];$(key+"Out").textContent=formats[key](cfg[key]);}$("wind").value=cfg.air;$("windOut").textContent=cfg.air+" mph";$("direction").value=cfg.dir;}
+function switchTab(t){tab=t;drawMode=false;selected=null;drag=null;document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));updateUI();updateResults();}
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+function updateUI(){
+ $("designPanel").classList.toggle("hidden",tab!=="design");$("windPanel").classList.toggle("hidden",tab!=="wind");$("statsPanel").classList.toggle("hidden",tab!=="stats");
+ for(const id of ["windbar","pause","sectionNote","metrics","results","additionalStats"])$(id).classList.toggle("hidden",tab==="design");
+$("additionalMetrics").classList.toggle("hidden",tab!=="wind");
+ $("designHint").classList.toggle("hidden",tab!=="design");$("tripCard").classList.toggle("hidden",tab!=="stats");$("snap").classList.toggle("hidden",tab!=="design");
+ $("pageTitle").textContent=tab==="design"?"Create something only you could build.":tab==="wind"?"Follow the air. Find the possibilities.":"From your design to the open road.";
+ $("stageTitle").textContent=(name.trim()||"Untitled car")+" · "+(tab==="design"?"Design":tab==="wind"?"Wind Tunnel":"IRL Statistics");
+ $("count").textContent=parts.length+" part"+(parts.length===1?"":"s");$("grid").textContent="Grid "+(showGrid?"on":"off");$("grid").classList.toggle("active",showGrid);$("snap").textContent="Snap "+(snap?"on":"off");$("snap").classList.toggle("active",snap);
+ $("pause").textContent=paused?"Resume flow":"Pause flow";
+ $("live").textContent=cfg.air===0?"Still air · move slider to start":paused?"Flow paused":"● Continuous flow";
+ $("stageHint").textContent=tab==="design"?(parts.length?"Drag to move · stretch freely · Shift locks proportions":"Blank canvas · choose a part to begin"):(section?"CENTER SECTION · ghosted wheels are outside the slice":"SIDE SILHOUETTE · body, tires, and axles are solid");
+ $("sectionNote").innerHTML=section?'<b>Default: airflow between the wheels.</b> This slice passes between the left and right tires, so the ghosted wheels do not block it. Air can travel beneath the chassis and through open space between axle parts. Body panels and added axles remain solid. '+(under?'<b>Extra bright underbody tracers are on.</b>':""):'<b>Solid side silhouette.</b> Tires block this two-dimensional flow plane. Air only enters open gaps; sealed pockets may have little or no through-flow. '+(under?"Extra underbody tracers are on.":"");
+ $("freehand").classList.toggle("active",drawMode);
+}
+function calc(road=cfg.road,air=cfg.air){
+ const b=bounds(),body=bounds(parts.filter(p=>!isWheel(p)))||b;
+ if(!b||!body)return null;
+ const length=Math.max(.1,b.w/U*.0254),height=Math.max(.05,b.h/U*.0254),mass=cfg.weight*.45359237,rho=cfg.rho*16.01846337;
+ const cd=clamp(.22+.2*height/length+.035*Math.min(7,parts.filter(p=>!isWheel(p)).length),.2,.85);
+ const area=cfg.width*.0254*height*.84,v=road*.44704,va=air*.44704,drag=.5*rho*va*va*cd*area,roll=cfg.crr*mass*9.80665,grade=mass*9.80665*Math.sin(Math.atan(cfg.grade/100));
+ const kw=Math.max(0,(drag+roll+grade)*v/1000),gph=kw/(cfg.eff/100*.9*33.7)+.15,mpg=road/gph;
+ return {cd,area,drag,roll,grade,kw,gph,mpg,clearance:groundClearance(),fuel:cfg.distance/mpg,time:cfg.distance/road,q:.5*rho*va*va,re:rho*va*length/1.81e-5};
+}
+function metric(label,value,unit,detail=""){return `<div class="metric"><label>${label}</label><strong>${value} <small>${unit}</small></strong>${detail?`<small>${detail}</small>`:""}</div>`;}
+// Definitions stay inside each existing Wind Tunnel metric, below its live value.
+const windMetricHelp={
+ "Wind speed": ["How fast air moves past the car. Faster air creates more drag.","Example: Test at 30, 60, and 90 mph. There is no single best testing speed."],
+ "Estimated drag": ["Air resistance is the force of air pushing against a moving car.","Good example: Under 100 lbf at 60 mph for a typical passenger car. Lower is better at the same speed."],
+ "Estimated drag coefficient": ["Shows how easily air flows around the car's shape. Lower means more aerodynamic.","Good example: A Cd of 0.20–0.30 is very aerodynamic."],
+ "Estimated frontal area": ["The size of the car's outline when viewed from the front.","Typical example: About 20–25 ft² for a passenger car. Smaller generally helps."],
+ "Drag area": ["Drag coefficient × frontal area. Combines the car's shape and size.","Good example: Under 6 ft²; 0.24 × 24 ft² = 5.76 ft²."],
+ "Ground clearance": ["The distance from the ground to the lowest non-wheel part of the car.","Typical example: 4–6 inches for a low passenger car. Too low may scrape."]
+};
+function windMetric(label,value,unit){
+ const [meaning,example]=windMetricHelp[label];
+ return `<div class="metric"><label>${label}</label><strong>${value} <small>${unit}</small></strong><span class="metricHelp">${meaning}</span><span class="metricExample"><b>Example:</b> ${example.replace(/^(Good example: |Typical example: |Example: )/,"")}</span></div>`;
+}
+function updateResults(){
+ const c=calc();if(!c){$("metrics").innerHTML=tab==="wind"?[
+ windMetric("Wind speed",cfg.air,"mph"),windMetric("Estimated drag","—","lbf"),windMetric("Drag area","—","ft²"),windMetric("Ground clearance","—","in")
+ ].join(""):metric("Start with a design","—","","Add parts in the Design tab.");
+ $("additionalMetrics").innerHTML=tab==="wind"?windMetric("Estimated drag coefficient","—","Cd")+windMetric("Estimated frontal area","—","ft²"):"";
+ $("physicsRows").innerHTML='<p class="muted small">Your design’s estimates will appear here.</p>';drawChart();return;}
+ const clear=c.clearance===null?"—":c.clearance.toFixed(1);
+ $("metrics").innerHTML=tab==="stats"?
+ metric("Estimated fuel economy",c.mpg.toFixed(1),"mpg")+metric("Ground clearance",clear,"in")+metric("Road power",(c.kw*1.34102).toFixed(1),"hp")+metric("Fuel use",c.gph.toFixed(2),"gal/hr")+metric("Trip fuel",c.fuel.toFixed(2),"gal")+metric("Trip time",(c.time*60).toFixed(0),"min"):
+ windMetric("Wind speed",cfg.air,"mph")+windMetric("Estimated drag",(c.drag*.224809).toFixed(1),"lbf")+windMetric("Drag area",(c.cd*c.area*10.7639).toFixed(1),"ft²")+windMetric("Ground clearance",clear,"in");
+ $("additionalMetrics").innerHTML=tab==="wind"?windMetric("Estimated drag coefficient",c.cd.toFixed(2),"Cd")+windMetric("Estimated frontal area",(c.area*10.7639).toFixed(1),"ft²"):"";
+ $("physicsRows").innerHTML=[
+ ["Flow section",section?"Between wheels":"Solid side silhouette"],
+ ["Underbody tracers",under?"Emphasized":"Normal"],
+ ["Dynamic pressure",(c.q*.0208854).toFixed(2)+" lbf/ft²"],
+ ["Rolling resistance",(c.roll*.224809).toFixed(1)+" lbf"],
+ ["Grade force",(c.grade*.224809).toFixed(1)+" lbf"],
+ ["Physical Reynolds number",c.re.toExponential(2)],
+ ["Road speed",cfg.road+" mph"],
+ ["Relative air speed",cfg.air+" mph"]
+ ].map(([k,v])=>`<div class="statrow"><span class="muted">${k}</span><strong>${v}</strong></div>`).join("");
+ $("chartTitle").textContent=tab==="stats"?"Fuel economy vs. road speed":"Drag vs. wind speed";$("chartHint").textContent=tab==="stats"?"Still-air road scenario: relative air speed matches road speed.":"For the same shape, drag rises with the square of wind speed.";
+ drawChart();
+}
+function drawChart(){
+ const c=$("chart"),g=c.getContext("2d"),w=c.width,h=c.height;g.clearRect(0,0,w,h);if(!parts.length)return;
+ const vals=Array.from({length:24},(_,i)=>{const speed=(i+1)*5,r=calc(tab==="stats"?speed:cfg.road,speed);return {x:speed,y:tab==="stats"?r.mpg:r.drag*.224809};}),max=Math.max(...vals.map(v=>v.y))*1.15;
+ g.strokeStyle="#2b3c53";g.fillStyle="#a1b3cc";g.font="10px system-ui";
+ for(let i=0;i<4;i++){const y=15+i*42;g.beginPath();g.moveTo(40,y);g.lineTo(w-10,y);g.stroke();g.fillText((max*(1-i/3)).toFixed(0),4,y+4);}
+ g.strokeStyle="#67edc3";g.lineWidth=2.5;g.beginPath();vals.forEach((v,i)=>{const x=40+v.x/120*(w-55),y=141-v.y/max*126;i?g.lineTo(x,y):g.moveTo(x,y);});g.stroke();
+ g.fillStyle="#a1b3cc";g.fillText("0",39,165);g.fillText("60 mph",w/2-12,165);g.fillText("120",w-32,165);
+}
+$("runTrip").onclick=()=>{const c=calc();if(!c)return;trip={start:performance.now(),c,distance:cfg.distance};};
+function notebook(){
+ $("notebook").innerHTML=records.length?records.map((r,i)=>`<tr><td>${esc(r.name||"Untitled car")}</td><td>${r.cfg.air} mph</td><td>${r.section?"Between wheels":"Side"}</td><td>${r.result?.clearance?.toFixed(1)??"—"} in</td><td>${r.result?.mpg?.toFixed(1)??"—"}</td><td><button data-restore="${i}">Restore</button> <button data-remove="${i}" aria-label="Delete record">×</button></td></tr>`).join(""):'<tr><td colspan="6" class="muted">Compare your experiments here.</td></tr>';
+}
+function saveRecords(){try{localStorage.setItem("slipstream-underbody-notebook-v1",JSON.stringify(records));$("notice").textContent="Notebook updated in this browser.";}catch{$("notice").textContent="Notebook available for this session. Browser storage is full or unavailable.";}}
+$("record").onclick=()=>{if(!parts.length){$("notice").textContent="Add parts before recording a design.";return;}records.unshift({name,parts:clone(parts),cfg:clone(cfg),section,under,result:calc()});records=records.slice(0,25);saveRecords();notebook();};
+$("notebook").onclick=e=>{
+ const restore=e.target.closest("[data-restore]"),remove=e.target.closest("[data-remove]");
+ if(restore){checkpoint();const r=records[+restore.dataset.restore];parts=clone(r.parts);parts.forEach(keepAboveGround);cfg={...cfg,...r.cfg,grade:0,crr:.012,distance:100};name=r.name;section=r.section;under=r.under!==false;selected=null;nextID=Math.max(0,...parts.map(p=>p.id))+1;$("carName").value=name;$("section").checked=section;$("under").checked=under;syncControls();changed();}
+ if(remove){records.splice(+remove.dataset.remove,1);saveRecords();notebook();}
+};
+try{const saved=JSON.parse(localStorage.getItem("slipstream-underbody-notebook-v1")||"[]");if(Array.isArray(saved))records=saved.filter(r=>Array.isArray(r.parts)&&r.parts.length<=120&&r.parts.every(p=>[p.x,p.y,p.w,p.h,p.rot].every(Number.isFinite)&&p.w>0&&p.h>0)&&r.cfg&&Number.isFinite(r.cfg.air)).slice(0,25);}catch{}
+function animate(now){
+ const dt=Math.min(.05,(now-lastTime)/1000||1/60);lastTime=now;
+ if(tab!=="design"){
+  if(!flow)buildFlow();
+  if(!paused&&cfg.air>0&&!errorText){
+   try{const start=performance.now();let steps=0;do{flow.step();steps++;}while(steps<5&&performance.now()-start<11);drawFlow(steps,dt);}
+   catch{errorText="Flow needs a restart. Lower the wind speed or restart at 0 mph.";paused=true;updateUI();}
+  }
+ }
+ if(now-lastRead>500){lastRead=now;$("flowStatus").textContent=tab==="design"?"1 grid square = 6 in · 2 squares = 1 ft":errorText||cfg.air===0?"0 mph · still air · no moving tracers":paused?"Paused":`2D fluid solver · ${flow?.steps||0} steps · ${under?"underbody emphasis on":"normal tracers"}`;}
+ if(trip){const p=clamp((now-trip.start)/12000,0,1);$("tripProgress").value=p;$("tripText").textContent=`${(trip.distance*p).toFixed(1)} / ${trip.distance} mi · ${(trip.c.fuel*p).toFixed(2)} gal used · ${trip.c.mpg.toFixed(1)} estimated mpg${p===1?" · Trip complete":""}`;if(p===1)trip=null;}
+ drawScene();requestAnimationFrame(animate);
+}
+renderPalette();updateInspector();updateLayers();syncControls();updateUI();updateResults();notebook();requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
